@@ -18,100 +18,126 @@
 </head>
 <body class="bg-gray-100 p-4 md:p-8 font-sans text-gray-800">
 
-    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-8 mt-10 md:mt-20 fade-in">
+    <div class="max-w-xl mx-auto bg-white rounded-3xl shadow-xl p-6 md:p-8 mt-6 md:mt-10 fade-in">
         
-        <!-- Cabeçalho -->
-        <div class="text-center mb-10">
+        <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center bg-green-100 rounded-full p-4 mb-4">
                 <span class="text-4xl">💸</span>
             </div>
-            <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Acerto do Rolê</h1>
-            <p class="text-lg text-gray-600 mt-2">Divisão de contas mais rapida e justa.</p>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Acerto do Rolê</h1>
+            <p class="text-base md:text-lg text-gray-600 mt-2">Divisão de contas mais rápida e justa.</p>
         </div>
 
-        <!-- Passo 1: Quantidade de Pessoas -->
-        <div class="mb-10 bg-gray-50 p-6 rounded-2xl border border-gray-100">
-            <label for="totalPessoas" class="block text-xl font-bold text-gray-900 mb-2">1. Quantas pessoas no total?</label>
-            <input type="number" id="totalPessoas" placeholder="Ex: 8" min="2" class="w-full border border-gray-200 p-4 rounded-xl text-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 transition">
+        <div class="mb-8 bg-blue-50 border border-blue-100 p-4 rounded-xl text-blue-800 text-sm md:text-base leading-relaxed">
+            <p><strong>💡 Como funciona:</strong> Digite o <b>total de pessoas</b> que participaram. Depois, coloque apenas os nomes e os valores de <b>quem fez algum pagamento</b>. O sistema cuida da matemática e diz quem deve fazer Pix para quem!</p>
         </div>
 
-        <!-- Passo 2: Informar Compradores -->
-        <div class="mb-10 bg-gray-50 p-6 rounded-2xl border border-gray-100">
-            <div class="flex items-center justify-between mb-4">
-                <label class="block text-xl font-bold text-gray-900">2. Quem pagou e quanto gastou?</label>
-                <button onclick="adicionarCompradorField()" class="bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-full hover:bg-blue-200 transition flex items-center gap-2">
+        <div class="mb-8 bg-gray-50 p-5 rounded-2xl border border-gray-200">
+            <label for="totalPessoas" class="block text-lg md:text-xl font-bold text-gray-900 mb-2">1. Quantas pessoas no total?</label>
+            <input type="number" id="totalPessoas" placeholder="Ex: 8" min="2" class="w-full border border-gray-300 p-4 rounded-xl text-lg focus:ring-2 focus:ring-green-400 focus:outline-none transition">
+        </div>
+
+        <div class="mb-8 bg-gray-50 p-5 rounded-2xl border border-gray-200">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
+                <label class="block text-lg md:text-xl font-bold text-gray-900">2. Quem pagou e quanto gastou?</label>
+                <button onclick="adicionarCompradorField()" class="w-full sm:w-auto bg-blue-100 text-blue-700 font-semibold px-4 py-2 rounded-full hover:bg-blue-200 transition flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Adicionar
                 </button>
             </div>
             
             <ul id="listaCompradoresFields" class="space-y-4">
-                <!-- O primeiro campo padrão será adicionado aqui via JS -->
-            </ul>
+                </ul>
         </div>
 
-        <!-- Botão Principal de Calcular -->
-        <div class="mb-10">
-            <button onclick="calcular()" class="w-full bg-green-500 text-white font-bold py-5 px-6 rounded-2xl hover:bg-green-600 transition flex items-center justify-center gap-3 text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="mb-8">
+            <button onclick="calcular()" class="w-full bg-green-500 text-white font-bold py-4 md:py-5 px-6 rounded-2xl hover:bg-green-600 transition flex items-center justify-center gap-3 text-lg md:text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <svg class="w-6 h-6 md:w-7 md:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Calcular Acerto Final
             </button>
         </div>
 
-        <!-- Resultado (Card Oculto) -->
-        <div id="resultadoContainer" class="bg-gray-50 p-6 rounded-2xl border border-gray-100 hidden fade-in">
-            <h2 class="text-3xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-4">Conclusão do Rolê</h2>
+        <div id="resultadoContainer" class="bg-gray-50 p-5 rounded-2xl border border-gray-200 hidden fade-in">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-4">Conclusão do Rolê</h2>
             
             <div class="space-y-6">
-                <!-- Seção: Quem Recebe -->
                 <div>
-                    <h3 class="flex items-center gap-3 text-xl font-semibold text-green-700 mb-4 bg-green-50 p-3 rounded-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="flex items-center gap-2 md:gap-3 text-lg md:text-xl font-semibold text-green-700 mb-4 bg-green-50 p-3 rounded-lg">
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         A Receber (Compradores)
                     </h3>
-                    <ul id="listaReceber" class="space-y-2 text-lg text-gray-800"></ul>
+                    <ul id="listaReceber" class="space-y-2 text-base md:text-lg text-gray-800"></ul>
                 </div>
 
-                <!-- Seção: Quem Paga -->
                 <div>
-                    <h3 class="flex items-center gap-3 text-xl font-semibold text-blue-700 mb-4 bg-blue-50 p-3 rounded-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    <h3 class="flex items-center gap-2 md:gap-3 text-lg md:text-xl font-semibold text-blue-700 mb-4 bg-blue-50 p-3 rounded-lg">
+                        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
                         A Pagar (O Restante)
                     </h3>
-                    <ul id="listaPagar" class="space-y-2 text-lg text-gray-800"></ul>
+                    <ul id="listaPagar" class="space-y-2 text-base md:text-lg text-gray-800"></ul>
                 </div>
             </div>
             
-            <p class="mt-8 text-center text-gray-500">Cálculo efetuado com Sucesso!.</p>
+            <p class="mt-8 text-center text-sm font-medium text-gray-500">✅ Cálculo efetuado com Sucesso!</p>
         </div>
     </div>
 
     <script>
-        // Função para adicionar o primeiro campo padrão ao carregar
         window.onload = function() {
-            adicionarCompradorField(true); // true indica que é o campo padrão, sem botão de remover
+            adicionarCompradorField(true); 
         };
+
+        // Máscara monetária para o input em tempo real (R$ 0,00)
+        function mascaraMoeda(event) {
+            let input = event.target;
+            let value = input.value.replace(/\D/g, ''); // Remove tudo que não é número
+            
+            if (value === '') {
+                input.value = '';
+                return;
+            }
+
+            // Converte para decimal e adiciona pontuação
+            value = (parseInt(value) / 100).toFixed(2) + '';
+            value = value.replace('.', ',');
+            value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            
+            input.value = 'R$ ' + value;
+        }
+
+        // Converte a string "R$ 1.500,00" de volta para número (1500.00) pro cálculo
+        function converterMoedaParaNumero(valorString) {
+            if (!valorString) return 0;
+            // Remove o R$, espaços, e pontos de milhar, depois troca vírgula por ponto
+            let numeroLimpo = valorString.replace(/[R$\s.]/g, '').replace(',', '.');
+            return parseFloat(numeroLimpo) || 0;
+        }
 
         function adicionarCompradorField(isDefault = false) {
             const lista = document.getElementById('listaCompradoresFields');
-            const index = lista.children.length;
-            
             const li = document.createElement('li');
-            li.className = 'flex items-center gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-inner fade-in';
+            
+            // Layout adaptado para celular: empilha no celular (flex-col) e fica lado a lado no PC (sm:flex-row)
+            li.className = 'flex flex-col sm:flex-row items-center gap-3 bg-white p-4 rounded-xl border border-gray-200 shadow-sm fade-in w-full';
             
             let removeButtonHTML = '';
             if (!isDefault) {
                 removeButtonHTML = `
-                    <button onclick="removerCompradorField(this)" class="text-red-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50 transition">
+                    <button onclick="removerCompradorField(this)" class="text-red-400 hover:text-red-600 p-3 rounded-xl hover:bg-red-50 transition shrink-0 bg-gray-50 border border-gray-200 sm:border-none sm:bg-transparent">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                     </button>
                 `;
+            } else {
+                // Espaçador invisível para manter o alinhamento no PC
+                removeButtonHTML = `<div class="w-12 hidden sm:block"></div>`;
             }
 
             li.innerHTML = `
-                <input type="text" placeholder="Nome" class="comprador-nome w-1/2 border border-gray-100 p-3 rounded-lg text-lg focus:ring-1 focus:ring-green-300 focus:border-green-300">
-                <input type="number" placeholder="R$ Gasto" min="0" class="comprador-valor w-1/3 border border-gray-100 p-3 rounded-lg text-lg focus:ring-1 focus:ring-green-300 focus:border-green-300">
-                ${removeButtonHTML}
+                <input type="text" placeholder="Nome" class="comprador-nome w-full sm:w-1/2 border border-gray-300 p-3 rounded-lg text-lg focus:ring-2 focus:ring-green-400 focus:outline-none transition">
+                <div class="flex gap-2 w-full sm:w-1/2">
+                    <input type="text" inputmode="numeric" placeholder="R$ 0,00" oninput="mascaraMoeda(event)" class="comprador-valor w-full border border-gray-300 p-3 rounded-lg text-lg focus:ring-2 focus:ring-green-400 focus:outline-none transition">
+                    ${removeButtonHTML}
+                </div>
             `;
             
             lista.appendChild(li);
@@ -125,12 +151,10 @@
             const totalPessoasInput = document.getElementById('totalPessoas');
             const totalPessoas = parseInt(totalPessoasInput.value);
             
-            // Validação básica do Passo 1
             if (isNaN(totalPessoas) || totalPessoas < 2) {
                 return alert("Por favor, informe uma quantidade de pessoas válida (no mínimo 2).");
             }
 
-            // Coletar dados dos compradores
             const nomeInputs = document.querySelectorAll('.comprador-nome');
             const valorInputs = document.querySelectorAll('.comprador-valor');
             let compradores = [];
@@ -138,14 +162,15 @@
 
             for (let i = 0; i < nomeInputs.length; i++) {
                 const nome = nomeInputs[i].value.trim();
-                const valor = parseFloat(valorInputs[i].value);
-                if (nome && !isNaN(valor) && valor > 0) {
+                // Usa a nova função para ler o valor mascarado
+                const valor = converterMoedaParaNumero(valorInputs[i].value);
+                
+                if (nome && valor > 0) {
                     compradores.push({ nome, valorGasto: valor });
                     totalGasto += valor;
                 }
             }
 
-            // Validação do Passo 2
             if (compradores.length === 0) {
                 return alert("Por favor, informe pelo menos um comprador com um valor válido.");
             }
@@ -153,38 +178,34 @@
             const cotaPorPessoa = totalGasto / totalPessoas;
             const quantidadeNaoCompradores = totalPessoas - compradores.length;
 
-            // Criar as listas de acerto
             let listaReceberHTML = '';
             let listaPagarHTML = '';
 
-            // 1. Quem Recebe (Compradores que pagaram a mais)
             compradores.forEach(comp => {
                 const saldo = comp.valorGasto - cotaPorPessoa;
                 if (saldo > 0) {
                     listaReceberHTML += `
-                        <li class="flex items-center justify-between bg-green-100 text-green-900 p-4 rounded-xl font-medium">
-                            <span>${comp.nome}</span>
-                            <span class="text-xl font-bold">R$ ${saldo.toFixed(2)}</span>
+                        <li class="flex flex-col sm:flex-row sm:items-center justify-between bg-green-100 text-green-900 p-4 rounded-xl font-medium gap-2">
+                            <span class="break-words">${comp.nome}</span>
+                            <span class="text-xl font-bold whitespace-nowrap">R$ ${saldo.toFixed(2).replace('.', ',')}</span>
                         </li>
                     `;
                 } else if (saldo < 0) {
-                    // Comprador que pagou a menos (raro, mas possível)
                     listaPagarHTML += `
-                        <li class="flex items-center justify-between p-4 border-b border-gray-100">
-                            <span>${comp.nome} (comprador)</span>
-                            <span class="text-gray-900">deve R$ ${Math.abs(saldo).toFixed(2)}</span>
+                        <li class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-4 border border-gray-200 rounded-xl gap-2">
+                            <span class="break-words">${comp.nome} <span class="text-xs text-gray-500 font-normal uppercase">(comprador)</span></span>
+                            <span class="text-gray-900 font-semibold whitespace-nowrap">R$ ${Math.abs(saldo).toFixed(2).replace('.', ',')}</span>
                         </li>
                     `;
                 }
             });
 
-            // 2. Quem Paga (O Restante)
             if (quantidadeNaoCompradores > 0) {
                 for (let i = 0; i < quantidadeNaoCompradores; i++) {
                     listaPagarHTML += `
-                        <li class="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0">
-                            <span>Amigo ${i + 1} (não comprador)</span>
-                            <span class="text-xl font-semibold text-gray-900">R$ ${cotaPorPessoa.toFixed(2)}</span>
+                        <li class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-4 border border-gray-200 rounded-xl gap-2">
+                            <span class="break-words text-gray-600">Amigo ${i + 1} <span class="text-xs text-gray-400 font-normal uppercase">(não comprador)</span></span>
+                            <span class="text-xl font-semibold text-gray-900 whitespace-nowrap">R$ ${cotaPorPessoa.toFixed(2).replace('.', ',')}</span>
                         </li>
                     `;
                 }
@@ -192,15 +213,13 @@
                  return alert("Erro: O número de compradores é maior que o total de pessoas.");
             }
 
-            // Exibir o resultado
             const containerResultado = document.getElementById('resultadoContainer');
             const listaReceberUL = document.getElementById('listaReceber');
             const listaPagarUL = document.getElementById('listaPagar');
 
-            listaReceberUL.innerHTML = listaReceberHTML;
-            listaPagarUL.innerHTML = listaPagarHTML;
+            listaReceberUL.innerHTML = listaReceberHTML || `<li class="p-2 text-gray-500 italic">Ninguém tem saldo a receber.</li>`;
+            listaPagarUL.innerHTML = listaPagarHTML || `<li class="p-2 text-gray-500 italic">Ninguém tem saldo a pagar.</li>`;
 
-            // Mostrar o card de resultado e rolar até ele
             containerResultado.classList.remove('hidden');
             containerResultado.scrollIntoView({ behavior: 'smooth' });
         }
