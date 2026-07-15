@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Rolê</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4 font-sans text-gray-800">
+
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md p-6 mt-10">
+        <h1 class="text-2xl font-bold text-center mb-6">💸 Acerto do Rolê</h1>
+
+        <!-- Formulário para adicionar gastos -->
+        <div class="flex gap-2 mb-6">
+            <input type="text" id="nome" placeholder="Nome" class="border p-2 rounded w-1/2">
+            <input type="number" id="valor" placeholder="R$ Gasto" class="border p-2 rounded w-1/3">
+            <button onclick="adicionarGasto()" class="bg-blue-500 text-white px-4 rounded hover:bg-blue-600">+</button>
+        </div>
+
+        <!-- Lista de quem já adicionou -->
+        <ul id="listaGastos" class="mb-6 space-y-2"></ul>
+
+        <!-- Botão para calcular -->
+        <button onclick="calcularPix()" class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 mb-6">
+            Calcular Pix
+        </button>
+
+        <!-- Resultado -->
+        <div id="resultado" class="bg-gray-50 p-4 rounded-lg hidden"></div>
+    </div>
+
+    <script>
+        let participantes = [];
+
+        function adicionarGasto() {
+            const nomeInput = document.getElementById('nome');
+            const valorInput = document.getElementById('valor');
+            const nome = nomeInput.value.trim();
+            const valor = parseFloat(valorInput.value);
+
+            // Validação simples
+            if (!nome || isNaN(valor) || valor < 0) return alert("Preencha nome e um valor válido (pode ser 0).");
+
+            // Se a pessoa já existe, soma o valor novo. Se não, adiciona.
+            const existente = participantes.find(p => p.nome.toLowerCase() === nome.toLowerCase());
+            if (existente) {
+                existente.valor += valor;
+            } else {
+                participantes.push({ nome, valor });
+            }
+
+            nomeInput.value = '';
+            valorInput.value = '';
+            nomeInput.focus();
+            atualizarLista();
+        }
+
+        function atualizarLista() {
+            const lista = document.getElementById('listaGastos');
+            lista.innerHTML = '';
+            participantes.forEach((p, index) => {
+                lista.innerHTML += `
+                    <li class="flex justify-between border-b py-1">
+                        <span>${p.nome}</span>
+                        <span class="font-semibold">R$ ${p.valor.toFixed(2)}</span>
+                    </li>
+                `;
+            });
+        }
+
+        function calcularPix() {
+            if (participantes.length < 2) return alert("Adicione pelo menos 2 pessoas.");
+
+            const totalGasto = participantes.reduce((acc, p) => acc + p.valor, 0);
+            const mediaPorPessoa = totalGasto / participantes.length;
+
+            let devedores = [];
+            let credores = [];
+
+            // Separa quem deve e quem tem a receber
+            participantes.forEach(p => {
+                const saldo = p.valor - mediaPorPessoa;
+                if (saldo < -0.01) devedores.push({ nome: p.nome, valor: Math.abs(saldo) });
+                if (saldo > 0.01) credores.push({ nome: p.nome, valor: saldo });
+            });
+
+            // Ordena do maior pro menor pra otimizar os pagamentos
+            devedores.sort((a, b) => b.valor - a.valor);
+            credores.sort((a, b) => b.valor - a.valor);
+
+            let transferencias = [];
+
+            // Lógica de casar dívidas
+            let i = 0; // index devedor
+            let j = 0; // index credor
+
+            while (i < devedores.length && j < credores.length) {
+                let devedor = devedores[i];
+                let credor = credores[j];
+                
+                // O valor da transferência é o menor entre a dívida e o crédito
+                let valorTransferencia = Math.min(devedor.valor, credor.valor);
+                
+                transferencias.push(`${devedor.nome} ➡️ paga <b>R$ ${valorTransferencia.toFixed(2)}</b> para ${credor.nome}`);
+                
+                devedor.valor -= valorTransferencia;
+                credor.valor -= valorTransferencia;
+                
+                if (devedor.valor < 0.01) i++;
+                if (credor.valor < 0.01) j++;
+            }
+
+            // Mostra o resultado na tela
+            const divResultado = document.getElementById('resultado');
+            divResultado.classList.remove('hidden');
+            divResultado.innerHTML = `
+                <p class="mb-2">Total do rolê: <b>R$ ${totalGasto.toFixed(2)}</b></p>
+                <p class="mb-4">Cada um paga: <b>R$ ${mediaPorPessoa.toFixed(2)}</b></p>
+                <h3 class="font-bold mb-2 border-t pt-2">Quem faz PIX pra quem:</h3>
+                <ul class="space-y-1">${transferencias.length > 0 ? transferencias.map(t => `<li>${t}</li>`).join('') : '<li>Tudo zerado! Ninguém deve ninguém.</li>'}</ul>
+            `;
+        }
+    </script>
+</body>
+</html>
